@@ -5,6 +5,8 @@ This repository contains the launcher, helper scripts, and wrappers needed to ru
 
 > The runtime binaries are not included. Users must download PHP, Node.js, Composer, Mailpit, and MySQL themselves.
 
+---
+
 ## 🚀 Why this repo exists
 
 - Keep all development tools inside `Laravel/`
@@ -12,6 +14,8 @@ This repository contains the launcher, helper scripts, and wrappers needed to ru
 - Support multiple PHP and Node versions side-by-side
 - Store caches and global Composer files inside the environment
 - Preserve portability for cloning on another machine
+
+---
 
 ## 📦 What is included
 
@@ -33,6 +37,8 @@ This repo does not include:
 
 Those files are large, version-specific, and must be downloaded by each user.
 
+---
+
 ## ⚡ Quick start
 
 1. Clone the repository.
@@ -48,6 +54,8 @@ Those files are large, version-specific, and must be downloaded by each user.
 4. Choose `Configure` to select PHP and Node versions.
 
 5. Choose `Start coding` to validate the environment.
+
+---
 
 ## 🛠️ Setup guide
 
@@ -206,6 +214,8 @@ mailpit stop
 mailpit status
 ```
 
+---
+
 ## ✅ Using the environment
 
 Run `starvel` and choose:
@@ -234,11 +244,15 @@ mailpit start
 mysql start
 ```
 
+---
+
 ## 🤝 Contributing
 
 Contributions, suggestions, and bug reports are welcome.
 
 If you find an issue or have an idea for improvement, feel free to open an issue or submit a pull request.
+
+---
 
 ## 📜 License
 
