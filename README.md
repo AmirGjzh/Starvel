@@ -234,6 +234,12 @@ mailpit start
 mysql start
 ```
 
----
+## 🤝 Contributing
 
-Hope you enjoy using this portable Laravel environment — happy coding! 🎉
+Contributions, suggestions, and bug reports are welcome.
+
+If you find an issue or have an idea for improvement, feel free to open an issue or submit a pull request.
+
+## 📜 License
+
+This project is licensed under the MIT License.
