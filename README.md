@@ -256,4 +256,4 @@ If you find an issue or have an idea for improvement, feel free to open an issue
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
