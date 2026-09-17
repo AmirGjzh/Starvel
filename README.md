@@ -1,33 +1,27 @@
-# Laravel Portable Development Environment
+# 🐘 Laravel Portable Dev Environment
 
-A portable Laravel development environment for Windows.
-This repository contains the launcher, helper scripts, and wrappers needed to run Laravel tools without installing them system-wide.
+A self-contained Laravel setup for Windows — everything lives inside one folder, nothing gets installed system-wide.
 
-> The runtime binaries are not included. Users must download PHP, Node.js, Composer, Mailpit, and MySQL themselves.
-
----
-
-## 🚀 Why this repo exists
-
-- Keep all development tools inside `Laravel/`
-- Avoid system-wide installations and PATH changes
-- Support multiple PHP and Node versions side-by-side
-- Store caches and global Composer files inside the environment
-- Preserve portability for cloning on another machine
+> Heads up: the actual runtime binaries (PHP, Node, Composer, MySQL, Mailpit) aren't included in this repo. You'll need to grab those yourself — instructions below.
 
 ---
 
-## 📦 What is included
+## ✨ Features
 
-- `starvel.bat` — main launcher
-- `scripts/Start-Laravel.ps1` — environment initialization
+- Every tool lives inside `Laravel/` — no system-wide installs, no messing with your PATH
+- Run multiple PHP and Node versions side by side
+- Caches and global Composer packages stay inside the environment
+- Clone it on another machine and it just works the same way
+
+## 📁 What's Inside
+
+**Included**
+- `starvel.bat` — the main launcher
+- `scripts/Start-Laravel.ps1` — sets up the environment
 - `scripts/MySQL.ps1`, `scripts/Mailpit.ps1` — service helpers
 - `bin/*.bat` — wrappers for PHP, Composer, Node, NPM, NPX, MySQL, Mailpit
 
-## ❌ What is intentionally excluded
-
-This repo does not include:
-
+**Not included** (download these yourself — see setup guide below)
 - PHP ZIP packages
 - Node.js ZIP archives
 - `composer.phar`
@@ -35,208 +29,157 @@ This repo does not include:
 - MySQL ZIP archive and binaries
 - Laravel installer package files
 
-Those files are large, version-specific, and must be downloaded by each user.
+These are big, version-specific files, so it made more sense to have each person grab their own instead of bloating the repo.
 
----
+## 🚀 Getting Started
 
-## ⚡ Quick start
+1. Clone the repo.
+2. Download and set up the tools below (PHP, Node, Composer, MySQL, Mailpit).
+3. Run `starvel`.
+4. Pick **Configure** to choose your PHP and Node versions.
+5. Pick **Start coding** to load everything and confirm it's working.
 
-1. Clone the repository.
+### Setting up the tools
 
-2. Download and prepare the required tools.
+**PHP**
 
-3. Run:
+1. Grab a Windows PHP ZIP from [php.net](https://www.php.net).
+2. Extract it to `tools\php\{version}`, e.g. `tools\php\8.4` or `tools\php\8.5`.
+3. Copy `php.ini-development` to `php.ini` inside that folder.
+4. Make sure `php.ini` includes at least:
 
-    ```powershell
-    starvel
-    ```
+```ini
+extension_dir = "ext"
+display_errors = On
+error_reporting = E_ALL
+memory_limit = 256M
+upload_max_filesize = 64M
+post_max_size = 64M
+max_execution_time = 60
 
-4. Choose `Configure` to select PHP and Node versions.
+zend_extension=opcache
+opcache.enable=1
+opcache.enable_cli=1
+opcache.memory_consumption=128
+opcache.max_accelerated_files=20000
+opcache.validate_timestamps=1
+opcache.revalidate_freq=2
 
-5. Choose `Start coding` to validate the environment.
+extension=gd
+extension=dom
+extension=pdo
+extension=zip
+extension=xml
+extension=curl
+extension=exif
+extension=intl
+extension=ctype
+extension=bcmath
+extension=sodium
+extension=openssl
+extension=sockets
+extension=sqlite3
+extension=fileinfo
+extension=mbstring
+extension=pdo_mysql
+extension=tokenizer
+extension=pdo_sqlite
+```
 
----
+5. Want another version? Just add another folder, e.g. `tools\php\8.6`.
 
-## 🛠️ Setup guide
+*To update:* download the new ZIP and extract it into a new version folder. To remove an old version, just delete its folder — the launcher picks up whatever's available under `tools\php` automatically.
 
-### 1. Add PHP
+**Node.js**
 
-1. Download a Windows PHP ZIP package from https://www.php.net.
-2. Extract it to `tools\php\{version}`:
+1. Grab a Node.js ZIP from [nodejs.org](https://nodejs.org).
+2. Extract it to `tools\node\{major}`, e.g. `tools\node\24` or `tools\node\25`.
+3. Add more versions the same way, e.g. `tools\node\26`.
 
-    - `tools\php\8.4`
-    - `tools\php\8.5`
+*To update:* same idea — new ZIP, new folder under `tools\node`, delete the old one when you don't need it anymore.
 
-3. Copy `php.ini-development` to `php.ini` inside the new version folder.
-4. Update `php.ini` so it contains at least:
+**Composer**
 
-    ```ini
-    extension_dir = "ext"
-    display_errors = On
-    error_reporting = E_ALL
-    memory_limit = 256M
-    upload_max_filesize = 64M
-    post_max_size = 64M
-    max_execution_time = 60
+1. Download `composer.phar` from [getcomposer.org](https://getcomposer.org).
+2. Put it in `tools\composer\composer.phar`.
+3. Once the environment is running, install the Laravel installer:
 
-    zend_extension=opcache
-    opcache.enable=1
-    opcache.enable_cli=1
-    opcache.memory_consumption=128
-    opcache.max_accelerated_files=20000
-    opcache.validate_timestamps=1
-    opcache.revalidate_freq=2
-
-    extension=gd
-    extension=dom
-    extension=pdo
-    extension=zip
-    extension=xml
-    extension=curl
-    extension=exif
-    extension=intl
-    extension=ctype
-    extension=bcmath
-    extension=sodium
-    extension=openssl
-    extension=sockets
-    extension=sqlite3
-    extension=fileinfo
-    extension=mbstring
-    extension=pdo_mysql
-    extension=tokenizer
-    extension=pdo_sqlite
-    ```
-
-5. Add additional versions by creating another folder, e.g. `tools\php\8.6`.
-
-### How to update PHP
-
-- To update PHP, download the new ZIP package and extract it to a new folder under `tools\php`, for example `tools\php\8.5`.
-- To remove an old version, delete its folder from `tools\php`.
-- The launcher automatically detects available versions and can switch to the latest one on `Configure`.
-
-### 2. Add Node.js
-
-1. Download a Node.js ZIP archive from https://nodejs.org.
-2. Extract it to `tools\node\{major}`:
-
-    - `tools\node\24`
-    - `tools\node\25`
-
-3. Add more versions by creating new folders, e.g. `tools\node\26`.
-
-### How to update Node.js
-
-- To update Node.js, download the new ZIP archive and extract it into a new folder under `tools\node`, for example `tools\node\26`.
-- To remove an old version, delete its folder from `tools\node`.
-- The launcher will detect available versions and allow selecting the active one.
-
-### 3. Add Composer
-
-1. Download `composer.phar` from https://getcomposer.org.
-2. Place it in `tools\composer\composer.phar`.
-
-After launching the environment, install the Laravel installer:
-
-```powershell
+```bash
 composer global require laravel/installer
 ```
 
-### How to update Composer & global packages
+*To update Composer itself:*
 
-- Update Composer itself with:
+```bash
+composer self-update
+```
 
-    ```powershell
-    composer self-update
-    ```
+*To update your global packages:*
 
-- Update globally installed Composer packages with:
+```bash
+composer global update
+```
 
-    ```powershell
-    composer global update
-    ```
+**MySQL**
 
-### 4. Add MySQL
-
-1. Download the MySQL ZIP archive from https://dev.mysql.com.
+1. Download the MySQL ZIP from [dev.mysql.com](https://dev.mysql.com).
 2. Extract it to `tools\database\mysql`.
+3. Initialize it:
 
-3. Initialize MySQL:
+```bash
+tools\database\mysql\bin\mysqld --initialize-insecure --console
+tools\database\mysql\bin\mysqld --console
+tools\database\mysql\bin\mysql_secure_installation
+```
 
-    ```powershell
-    tools\database\mysql\bin\mysqld --initialize-insecure --console
-    tools\database\mysql\bin\mysqld --console
-    tools\database\mysql\bin\mysql_secure_installation
-    ```
+4. Create `tools\database\mysql\my.ini`:
 
-4. Create `tools\database\mysql\my.ini` with:
+```ini
+[client]
+port=3306
 
-    ```ini
-    [client]
-    port=3306
+[mysqld]
+port=3306
+general-log = 1
+bind-address = 127.0.0.1
+```
 
-    [mysqld]
-    port=3306
-    general-log = 1
-    bind-address = 127.0.0.1
-    ```
+If port 3306 is already taken by another MySQL install, just change it here.
 
-If another MySQL service already uses `3306`, change the port in `my.ini`.
+*Managing it:*
 
-### MySQL usage
-
-Use the `mysql` wrapper to manage the local MySQL process:
-
-```powershell
+```bash
 mysql start
 mysql stop
 mysql status
 ```
 
-### 5. Add Mailpit
+**Mailpit**
 
-1. Download `mailpit.exe` from https://github.com/axllent/mailpit.
-2. Place it in `tools\mailpit\mailpit.exe`.
+1. Download `mailpit.exe` from [github.com/axllent/mailpit](https://github.com/axllent/mailpit).
+2. Put it in `tools\mailpit\mailpit.exe`.
 
-### How to update Mailpit
+*To update:* just swap in the newer `mailpit.exe` — the launcher always uses whatever's at that path.
 
-- Replace `tools\mailpit\mailpit.exe` with the newer executable.
-- The launcher uses the executable from that fixed path.
+*Managing it:*
 
-### Mailpit usage
-
-Use the `mailpit` wrapper to manage the local Mailpit process:
-
-```powershell
+```bash
 mailpit start
 mailpit stop
 mailpit status
 ```
 
----
+## ▶️ Usage
 
-## ✅ Using the environment
+Run `starvel` and pick:
+- **Configure** — choose your active PHP and Node versions
+- **Start coding** — load the environment and confirm everything's available
 
-Run `starvel` and choose:
+Once it's loaded, these wrapper commands are ready to use:
 
-- `Configure` to select the active PHP and Node versions
-- `Start coding` to load the environment and confirm tool availability
+`php`, `composer`, `laravel`, `node`, `npm`, `npx`, `mysql`, `mailpit`
 
-Once loaded, the following wrapper commands are available:
-
-- `php`
-- `composer`
-- `laravel`
-- `node`
-- `npm`
-- `npx`
-- `mysql`
-- `mailpit`
-
-Example:
-
-```powershell
+```bash
 composer --version
 php --version
 node --version
@@ -244,16 +187,10 @@ mailpit start
 mysql start
 ```
 
----
-
 ## 🤝 Contributing
 
-Contributions, suggestions, and bug reports are welcome.
-
-If you find an issue or have an idea for improvement, feel free to open an issue or submit a pull request.
-
----
+Found a bug or have an idea? Open an issue or send a pull request — contributions are always welcome.
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
